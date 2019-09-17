@@ -35,3 +35,30 @@ Parallel.mapはブロックが並列に実行されるmapです。 並列に処�
 #### ワーカー番号の取得
 
 上記のメソッド以外の機能もあります。 ブロック内でParallel.worker_numberを呼ぶとワーカースレッド/プロセスの番号を取得できます。 デバッグやロギングで利用できます。
+
+### スレッドとプロセス
+
+parallelのメソッドはオプションでプロセスで処理(in_processes)するかスレッドで処理(in_threads)するかを切り替えることができます。
+
+
+#### プロセスで処理する場合
+
+CRubyで何もオプションを指定しなければプロセスによる並列処理になります。 並列数はparallel内部のParallel::ProcessorCount.countが返す論理コア数になります。
+
+in_processes: 並列数を指定すると指定したプロセス数で並列化して実行できます。
+
+```ruby
+Paralell.each(1..10, in_processes: 10); end
+```
+
+parallelの内部でforkして作られたワーカープロセスはメソッド呼び出しが完了するまで使い回されます。 1回のブロックの実行毎にforkさせたい場合は`isolation: true`を指定することもできます。
+
+```ruby
+Paralell.each(1..10, in_processes: 10, isolation: true); end
+```
+
+#### スレッドで処理する場合
+
+JRubyで何もオプションを指定しなければスレッドによる並列処理になります。 並列数はparallel内部の`Parallel::ProcessorCount.count`が返す論理コア数になります。
+
+`in_threads: 並列数`を指定すると指定したスレッド数で並列化して実行できます。
