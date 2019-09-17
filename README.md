@@ -12,7 +12,7 @@ gem "parallel"
 $ ruby sample.rb
 ```
 
-##　並列処理メソッド対応表
+## 並列処理メソッド対応表
 
 |Rubyのメソッド|対応するparallelのメソッド|
 |:---:|:---:|
